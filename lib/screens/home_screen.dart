@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${pet.name}'),
+        title: Text(pet.name),
       ),
       body: Center(
         child: Column(
