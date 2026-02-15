@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/pet_provider.dart';
+import '../widgets/feed_pet_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -10,7 +11,50 @@ class HomeScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(pet.name),
+        title: Text(pet.name, style: TextStyle(color: Colors.white)),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              child: Text(
+                'Aiboo',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text('About'),
+              onTap: () {
+                showAboutDialog(
+                  context: context,
+                  applicationName: 'Aiboo',
+                  applicationVersion: '1.0.0',
+                  applicationIcon: Icon(Icons.pets, size: 48),
+                  children: [
+                    Text('A simple companion app built just for you.'),
+                    Text('Feed your pet as if you are talking to your best friend and watch both of you grow!'),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: Center(
         child: Column(
@@ -35,13 +79,20 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
-                petProvider.feedPet();
+                _showFeedDialog(context, petProvider);
               },
               child: Text('Feed Pet'),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _showFeedDialog(BuildContext context, PetProvider petProvider) {
+    showDialog(
+      context: context,
+      builder: (context) => FeedPetDialog(petProvider: petProvider),
     );
   }
 }
